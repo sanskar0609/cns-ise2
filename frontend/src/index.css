@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #050a0f;
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a1628;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1a3354;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00d4ff44;
+  }
+
+  ::selection {
+    background: rgba(0, 212, 255, 0.3);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .cyber-card {
+    @apply bg-cyber-card border border-cyber-border rounded-2xl p-6 relative overflow-hidden;
+    backdrop-filter: blur(10px);
+  }
+
+  .cyber-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.5), transparent);
+  }
+
+  .cyber-btn {
+    @apply px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 cursor-pointer;
+  }
+
+  .cyber-btn-primary {
+    @apply cyber-btn bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:from-cyan-400 hover:to-blue-500;
+    box-shadow: 0 0 20px rgba(0,212,255,0.3);
+  }
+
+  .cyber-btn-primary:hover {
+    box-shadow: 0 0 30px rgba(0,212,255,0.5);
+    transform: translateY(-1px);
+  }
+
+  .cyber-btn-ghost {
+    @apply cyber-btn border border-cyber-border text-slate-400 hover:border-cyber-accent hover:text-cyber-accent;
+  }
+
+  .cyber-input {
+    @apply w-full bg-cyber-surface border border-cyber-border rounded-xl px-4 py-3 text-white font-mono
+           placeholder-slate-600 outline-none transition-all duration-300;
+  }
+
+  .cyber-input:focus {
+    @apply border-cyber-accent;
+    box-shadow: 0 0 0 3px rgba(0,212,255,0.1), 0 0 20px rgba(0,212,255,0.1);
+  }
+
+  .strength-bar {
+    @apply h-2 rounded-full transition-all duration-700 ease-out;
+  }
+
+  .tag {
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold;
+  }
+
+  .metric-row {
+    @apply flex items-center justify-between py-2.5 border-b border-cyber-border/50 last:border-0;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 20px currentColor;
+  }
+
+  .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+}
+
+@layer utilities {
+  .text-gradient-cyan {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #00d4ff, #7c3aed);
+  }
+
+  .text-gradient-danger {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #ef4444, #f97316);
+  }
+
+  .border-gradient {
+    border-image: linear-gradient(135deg, #00d4ff, #7c3aed) 1;
+  }
+
+  .animate-in {
+    animation: fadeInUp 0.4s ease-out forwards;
+  }
+}
+
+/* ── Custom Animations ────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scanline {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 0.5; }
+  90%  { opacity: 0.5; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(0,212,255,0.3); }
+  50%       { box-shadow: 0 0 30px rgba(0,212,255,0.7), 0 0 60px rgba(0,212,255,0.3); }
+}
+
+@keyframes rotate-ring {
+  from { stroke-dashoffset: 283; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes number-tick {
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Strength Score Ring ──────────────────────────────── */
+.score-ring-path {
+  transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s;
+  stroke-dasharray: 283;
+}
+
+/* ── Tooltip ──────────────────────────────────────────── */
+.tooltip {
+  position: relative;
+}
+.tooltip:hover::after {
+  content: attr(data-tip);
+  @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 rounded-lg
+         text-xs text-white whitespace-nowrap z-50;
+  background: rgba(10, 22, 40, 0.95);
+  border: 1px solid rgba(0,212,255,0.3);
+  box-shadow: 0 0 10px rgba(0,212,255,0.2);
+}
+
+/* ── Particle bg ──────────────────────────────────────── */
+.particle-bg {
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(0,212,255,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(124,58,237,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0%, rgba(5,10,15,0.8) 100%);
+}
+
+/* ── Loading shimmer ──────────────────────────────────── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.05) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ── Neon borders ─────────────────────────────────────── */
+.neon-border-cyan {
+  box-shadow: 0 0 0 1px rgba(0,212,255,0.5), inset 0 0 20px rgba(0,212,255,0.05);
+}
+.neon-border-purple {
+  box-shadow: 0 0 0 1px rgba(124,58,237,0.5), inset 0 0 20px rgba(124,58,237,0.05);
+}
+.neon-border-red {
+  box-shadow: 0 0 0 1px rgba(239,68,68,0.5), inset 0 0 20px rgba(239,68,68,0.05);
+}
+.neon-border-green {
+  box-shadow: 0 0 0 1px rgba(16,185,129,0.5), inset 0 0 20px rgba(16,185,129,0.05);
+}
+
+/* ── Toggle switch ────────────────────────────────────── */
+.toggle-switch {
+  @apply relative inline-flex h-6 w-11 cursor-pointer rounded-full transition-colors duration-200;
+}
+.toggle-switch input {
+  @apply sr-only;
+}
+.toggle-thumb {
+  @apply absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-md transition-transform duration-200;
+}
+input:checked ~ .toggle-thumb {
+  @apply translate-x-5;
+}
