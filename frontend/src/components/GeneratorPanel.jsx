@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Wand2, Copy, RefreshCw, CheckCheck, Sliders, Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 const DEFAULTS = {
   length: 16,
   uppercase: true,
@@ -44,7 +46,7 @@ export default function GeneratorPanel({ onUsePassword }) {
     setLoading(true);
     setError('');
     try {
-      const { data } = await axios.post('/api/generate', opts);
+      const { data } = await axios.post(`${API_BASE}/api/generate`, opts);
       setGenerated(data.password);
     } catch (e) {
       setError(e.response?.data?.error || 'Generation failed. Is the backend running?');

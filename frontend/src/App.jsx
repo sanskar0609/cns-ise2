@@ -10,6 +10,9 @@ import EntropyMeter      from './components/EntropyMeter.jsx';
 import AttackResistance  from './components/AttackResistance.jsx';
 import GeneratorPanel    from './components/GeneratorPanel.jsx';
 
+// Use VITE_API_URL env var in production (Vercel), fallback to '' (Vite proxy) in dev
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 const DEBOUNCE_MS = 350;
 
 export default function App() {
@@ -31,7 +34,7 @@ export default function App() {
     setError('');
 
     try {
-      const { data } = await axios.post('/api/analyze', { password: pwd });
+      const { data } = await axios.post(`${API_BASE}/api/analyze`, { password: pwd });
       setResult(data);
     } catch (e) {
       if (e.code === 'ERR_NETWORK') {
